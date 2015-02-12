@@ -1,0 +1,16 @@
+<div class="col-md-12 text-center">
+    <h1>My Blog!</h1>
+    <alerts></alerts>
+    <a ng-show="currentUser" class="btn btn-success" href="/post/new">+</a>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div ng-repeat="post in posts">
+            <h3>{{post.title}}</h3>
+            <p>{{post.body | wordLimit:40}}</p>
+            <a class="" href="/post/{{post.id}}">Read More</a>
+            <button ng-show="currentUser" ng-click="deletePost($index)" class="btn btn-danger btn-xs glyphicon glyphicon-trash"></button>
+            <button ng-show="currentUser" ng-click="editPost($index)" class="btn btn-primary btn-xs glyphicon glyphicon-pencil"></button>
+        </div>
+    </div>
+</div>
