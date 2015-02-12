@@ -12,6 +12,7 @@ myBlogApp.controller('HomeCtrl', ['$scope','$http','$modal', 'AlertService', '$l
     var searchTerm = queryData.q || false;
 
     var req = {
+        method: 'get',
         url:'/api/post',
         params:{
             'sort':'createdAt desc'
@@ -20,12 +21,40 @@ myBlogApp.controller('HomeCtrl', ['$scope','$http','$modal', 'AlertService', '$l
 
     if(searchTerm){
         req.params.body = '%' + searchTerm + '%';
-        // req.params.title = '%' + searchTerm + '%';
     };
 
-       $http(req).success(function(data){
-        $scope.posts = data;
+    io.socket.request(req.url, req.params, function(data,jwrs){
+        $scope.$apply(function(){
+            $scope.posts = data;
+        });
+        console.log('jwrs', jwrs);
     });
+
+    io.socket.on('post', function(event){
+        switch(event.verb){
+            case 'updated':
+                $scope.posts.forEach(function(item,idx){
+                    if(item.id === event.id){
+                        $scope.$apply(function(){
+                            event.data.id = event.id
+                            $scope.posts[idx] = event.data;
+                        });
+                    }
+                })
+                break;
+            case 'created':
+                $scope.$apply(function(){
+                    $scope.posts.unshift(event.data);
+                });
+                break;
+            default:
+                console.log('event', event);
+        }
+    })
+
+    //    $http(req).success(function(data){
+    //     $scope.posts = data;
+    // });
 
     // This is a good way to do it in Sails (vs above), but used above for this example
     // $http.get('/.api/post').success(function(data){

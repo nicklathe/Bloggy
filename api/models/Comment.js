@@ -17,6 +17,10 @@ module.exports = {
     // associations
     post: {
         model: 'Post'
+    },
+
+    owner: {
+        model: 'User'
     }
 
   }

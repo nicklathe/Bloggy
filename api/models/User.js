@@ -24,13 +24,26 @@ module.exports = {
         type: 'string',
         required: true
     },
+    // associations
 
+    comments:{
+        collection:'Comment',
+        via:'owner'
+    },
+
+    posts: {
+        collection: 'Post',
+        via: 'owner'
+    },
+
+    // instance methods
     toJSON: function(){
         var userObj = this.toObject();
         delete userObj.password;
         return userObj;
     }
   },
+
   beforeCreate:function(values, cb){
     bcrypt.hash(values.password, 10, function(err, hash){
         if(err) return cb(err);

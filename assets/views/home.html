@@ -7,6 +7,7 @@
     <div class="col-md-8">
         <div ng-repeat="post in posts">
             <h3>{{post.title}}</h3>
+            <p><i>Authored by {{post.owner.firstName || 'Unknown'}} on {{post.createdAt}}</i></p>
             <p>{{post.body | wordLimit:40}}</p>
             <a class="" href="/post/{{post.id}}">Read More</a>
             <button ng-show="currentUser" ng-click="deletePost($index)" class="btn btn-danger btn-xs glyphicon glyphicon-trash"></button>
