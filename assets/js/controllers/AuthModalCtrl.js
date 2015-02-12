@@ -9,7 +9,7 @@ myBlogApp.controller('AuthModalCtrl', ['$scope', '$modalInstance', 'UserService'
                 //succesful login
                 $modalInstance.close();
             } else {
-                //login error (bad user or password)
+                //login error (bad user email or password)
                 alert(data.error);
             }
 
